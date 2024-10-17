@@ -42,7 +42,7 @@ public class main
             Crts = SC.act(Crts, this);
             steps++;
 
-            if ((C_count <= 0)||(SC.getEnergy()==0))
+            if ((C_count <= 0)||(SC.getEnergy()<0))
             {
                 show_status(true, steps);
                 break;
