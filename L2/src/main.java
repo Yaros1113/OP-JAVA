@@ -1,7 +1,7 @@
 public class main
 {
-    int n = 15;
-    int k = 40;
+    int n = 20;
+    int k = 80;
     int C_count;
     Critter[] Crts = new Critter[k];
 
@@ -42,7 +42,7 @@ public class main
             Crts = SC.act(Crts, this);
             steps++;
 
-            if (C_count <= 0)
+            if ((C_count <= 0)||(SC.getEnergy()==0))
             {
                 show_status(true, steps);
                 break;
@@ -63,6 +63,7 @@ public class main
             for (int i = 0; i<n*2; i++) {System.out.print("_");} 
             System.out.println();
             System.out.println("Конец!");
+            if (C_count==0) {System.out.println("Криттер победил!!");} else {System.out.println("Криттер умер...");}
             System.out.println("Число шагов: " + st);
         }
         else
@@ -175,7 +176,6 @@ class StockpileCritter extends Critter
         }
         else
         {
-            c.kill(c.C_count);
             return xy;
         }
     }
