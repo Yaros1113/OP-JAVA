@@ -1,25 +1,11 @@
 public class main
 {
-    int n = 8;
-    int k = 8;
+    int n = 15;
+    int k = 40;
     int C_count;
     Critter[] Crts = new Critter[k];
 
     StockpileCritter SC;
-
-    /*public main(int _n, int _k)
-    {
-        n = _n; k = _k;
-        for (int i=0; i<k+1; i++)
-        {
-            Crts[i] = new Critter(Math.abs(n-i), (k+i)%n);
-        }
-
-        SC = new StockpileCritter(Crts[k+1].x, Crts[k+1].y, n);
-        Crts[k+1] = null;
-
-        run();
-    }*/
 
     public static void main(final String[] args) throws InterruptedException {
         new main();
@@ -27,11 +13,11 @@ public class main
 
     public main() throws InterruptedException {
         C_count = k;
-        int[][] rnd = new int[n*2][2];
-        rnd[0][0] = ((int) (Math.random() * 10))%n; rnd[0][1] = ((int) (Math.random() * 100))%n;
-        for (int i=1; i<n*2; i++)
+        int[][] rnd = new int[k*3][2];
+        rnd[0][0] = ((int) (Math.random() * 100))%n; rnd[0][1] = ((int) (Math.random() * 100))%n;
+        for (int i=1; i<k*3; i++)
         {
-            int[] r = {((int) (Math.random() * 10))%n, rnd[0][0] = ((int) (Math.random() * 100))%n};
+            int[] r = {((int) (Math.random() * 100))%n, rnd[0][0] = ((int) (Math.random() * 100))%n};
             boolean f = true;
             for (int j = 0; j<i; j++) { if (rnd[j] == r) { f = false; break; } }
             if (f)
@@ -41,7 +27,7 @@ public class main
         }
         for (int i=0; i<k; i++)
         {
-            Crts[i] = new Critter(rnd[i][0], rnd[i][1]);
+            Crts[i] = new Critter(rnd[i][0], rnd[i][1], ((int) (Math.random() * 10))%4+1);
         }
 
         SC = new StockpileCritter(rnd[k+1][0], rnd[k+1][1], n);
@@ -65,7 +51,7 @@ public class main
             {
                 show_status(false, 0);
             }
-            Thread.sleep(1000);
+            Thread.sleep(800);
         }
         return;
     }
@@ -74,30 +60,42 @@ public class main
     {
         if (f)
         {
+            for (int i = 0; i<n*2; i++) {System.out.print("_");} 
+            System.out.println();
             System.out.println("Конец!");
             System.out.println("Число шагов: " + st);
         }
         else
         {
+            for (int i = 0; i<28-n; i++) {System.out.println();}
+
             String[][] M = new String[n][n];
+
+            System.out.print(" ");
+            for (int i = 0; i<n*2; i++) {System.out.print("_");}
+            System.out.println();
+
             for (int i = 0; i<n; i++)
             {
                 for (int j = 0; j<n; j++)
                 {
-                    M[i][j] = " ";
+                    M[i][j] = "_";
                 }
             }
             for(int i = 0; i<k; i++)
             {
                 if (Crts[i] != null)
                 {
-                    M[Crts[i].x][Crts[i].y] = "*";
+                    if (Crts[i].pwr <= 2) {M[Crts[i].x][Crts[i].y] = "*";}
+                    else {M[Crts[i].x][Crts[i].y] = "o";}
                 }
 
             }
             if (SC.getEnergy() != 0)
             {
-                M[SC.x][SC.y] = "@";
+                if (SC.pwr <= 2) {M[SC.x][SC.y] = "Ф";}
+                else {M[SC.x][SC.y] = "@";}
+                
             }
             else
             {
@@ -106,14 +104,13 @@ public class main
 
             for(int j=0; j<n; j++)
             {
+                System.out.print("|");
                 for (int i = 0; i<n; i++)
                 {
-                    System.out.print(M[j][i]);
+                    System.out.print(M[j][i]+"|");
                 }
                 System.out.println();
             }
-            System.out.println();
-            System.out.println();
         }
     }
 
@@ -125,12 +122,13 @@ public class main
 
 class Critter
 {
-    int x, y;
+    int x, y, pwr;
 
-    public Critter(int _x, int _y)
+    public Critter(int _x, int _y, int _pwr)
     {
         x = _x;
         y = _y;
+        pwr = _pwr;
     }
 
     public Critter() { }
@@ -147,6 +145,7 @@ class StockpileCritter extends Critter
         y = _y;
         n = _n;
         energy = 2;
+        pwr = 2;
     }
 
     public Critter[] act(Critter[] xy, main c)
@@ -155,22 +154,24 @@ class StockpileCritter extends Critter
         if (energy>0)
         {
             int i, j;
+            boolean f = true;
             if (x-1>=0) { i = x-1;} else { i = 0;}
             if (y-1>=0) { j = y-1;} else { j = 0;}
             for (int m=0;m<Crts.length;m++)
             {
                 if (Crts[m] != null)
                 {
-                    if (((Crts[m].x>=i) && (Crts[m].x<=i+3)) && ((Crts[m].y>=j) && (Crts[m].y<=j+3)))
+                    if (((Crts[m].x>=i) && (Crts[m].x<=i+2)) && ((Crts[m].y>=j) && (Crts[m].y<=j+2)))
                     {
+                        energy+=Crts[m].pwr;
                         Crts[m] = null;
                         c.kill(1);
-                        energy++;
+                        f = false;
                     }
                 }
             }
-            move();
-            return xy;
+            if (f) {move(Crts); if (energy>n/4){pwr=4;} else {pwr=2;}}
+            return Crts;
         }
         else
         {
@@ -179,26 +180,88 @@ class StockpileCritter extends Critter
         }
     }
 
-    public void move()
+    public void move(Critter[] Crts)
     {
-        double dx = Math.random();
-        double dy = Math.random();
-        if (dx>0.60) {
-            x = (x+1)%n;
-        }
-        else if (dx<0.30)
+        boolean f = true;
+        for (int m=0;m<Crts.length;m++)
         {
-            x -= 1;
-            if (x<0){x = 0;}
+            if (Crts[m] != null)
+            {
+                if (((Crts[m].x>=x-2) && (Crts[m].x<=x-1)) && ((Crts[m].y>=y-2) && (Crts[m].y<=y-1)))
+                {
+                    x = (x-1); if (x<0){x = 0;}
+                    y = (y-1); if (y<0){y = 0;}
+                    f = false;
+                    break;
+                }
+                else if (((Crts[m].x>=x-2) && (Crts[m].x<=x-1)) && ((Crts[m].y>=y+2) && (Crts[m].y<=y+1)))
+                {
+                    x = (x-1); if (x<0){x = 0;}
+                    y = (y+1)%n;
+                    f = false;
+                    break;
+                }
+                else if (((Crts[m].x>=x+2) && (Crts[m].x<=x+1)) && ((Crts[m].y>=y+2) && (Crts[m].y<=y+1)))
+                {
+                    x = (x+1)%n;
+                    y = (y+1)%n;
+                    f = false;
+                    break;
+                }
+                else if (((Crts[m].x>=x+2) && (Crts[m].x<=x+1)) && ((Crts[m].y>=y-2) && (Crts[m].y<=y-1)))
+                {
+                    x = (x+1)%n;
+                    y = (y-1); if (y<0){y = 0;}
+                    f = false;
+                    break;
+                }
+                else if (((Crts[m].x>=x+1)||(Crts[m].x<=x+2))&&(Crts[m].y==y))
+                {
+                    x = (x+1)%n;
+                    f = false;
+                    break;
+                }
+                else if (((Crts[m].x<=x-1)||(Crts[m].x>=x-2))&&(Crts[m].y==y))
+                {
+                    x = (x-1); if (x<0){x = 0;}
+                    f = false;
+                    break;
+                }
+                else if (((Crts[m].y>=y+1)||(Crts[m].y<=y+2))&&(Crts[m].x==x))
+                {
+                    y = (y+1)%n;
+                    f = false;
+                    break;
+                }
+                else if (((Crts[m].y<=y-1)||(Crts[m].y>=y-2))&&(Crts[m].x==x))
+                {
+                    y = (y-1); if (y<0){y = 0;}
+                    f = false;
+                    break;
+                }
+            }
         }
+        if (f)
+        {
+            double dx = Math.random();
+            double dy = Math.random();
+            if (dx>0.60) {
+                x = (x+1)%n;
+            }
+            else if (dx<0.40)
+            {
+                x -= 1;
+                if (x<0){x = 0;}
+            }
 
-        if (dy>0.60) {
-            y = (y+1)%n;
-        }
-        else if (dy<0.30)
-        {
-            y -= 1;
-            if (y<0){y = 0;}
+            if (dy>0.60) {
+                y = (y+1)%n;
+            }
+            else if (dy<0.40)
+            {
+                y -= 1;
+                if (y<0){y = 0;}
+            }
         }
         energy--;
     }
