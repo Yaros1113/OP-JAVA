@@ -42,7 +42,7 @@ public class main
             Crts = SC.act(Crts, this);
             steps++;
 
-            if ((C_count <= 0)||(SC.getEnergy()<0))
+            if ((C_count <= 0)||(SC.getEnergy()==0))
             {
                 show_status(true, steps);
                 break;
@@ -58,6 +58,51 @@ public class main
 
     private void show_status(boolean f, int st)
     {
+        for (int i = 0; i<28-n; i++) {System.out.println();}
+
+        String[][] M = new String[n][n];
+
+        System.out.print(" ");
+        for (int i = 0; i<n*2; i++) {System.out.print("_");}
+        System.out.println();
+
+        for (int i = 0; i<n; i++)
+        {
+            for (int j = 0; j<n; j++)
+            {
+                M[i][j] = "_";
+            }
+        }
+        for(int i = 0; i<k; i++)
+        {
+            if (Crts[i] != null)
+            {
+                if (Crts[i].pwr <= 2) {M[Crts[i].x][Crts[i].y] = "*";}
+                else {M[Crts[i].x][Crts[i].y] = "o";}
+            }
+
+        }
+        if (SC.getEnergy() != 0)
+        {
+            if (SC.pwr <= 2) {M[SC.x][SC.y] = "Ф";}
+            else {M[SC.x][SC.y] = "@";}
+            
+        }
+        else
+        {
+            M[SC.x][SC.y] = ".";
+        }
+
+        for(int j=0; j<n; j++)
+        {
+            System.out.print("|");
+            for (int i = 0; i<n; i++)
+            {
+                System.out.print(M[j][i]+"|");
+            }
+            System.out.println();
+        }
+        
         if (f)
         {
             for (int i = 0; i<n*2; i++) {System.out.print("_");} 
@@ -65,53 +110,6 @@ public class main
             System.out.println("Конец!");
             if (C_count==0) {System.out.println("Криттер победил!!");} else {System.out.println("Криттер умер...");}
             System.out.println("Число шагов: " + st);
-        }
-        else
-        {
-            for (int i = 0; i<28-n; i++) {System.out.println();}
-
-            String[][] M = new String[n][n];
-
-            System.out.print(" ");
-            for (int i = 0; i<n*2; i++) {System.out.print("_");}
-            System.out.println();
-
-            for (int i = 0; i<n; i++)
-            {
-                for (int j = 0; j<n; j++)
-                {
-                    M[i][j] = "_";
-                }
-            }
-            for(int i = 0; i<k; i++)
-            {
-                if (Crts[i] != null)
-                {
-                    if (Crts[i].pwr <= 2) {M[Crts[i].x][Crts[i].y] = "*";}
-                    else {M[Crts[i].x][Crts[i].y] = "o";}
-                }
-
-            }
-            if (SC.getEnergy() != 0)
-            {
-                if (SC.pwr <= 2) {M[SC.x][SC.y] = "Ф";}
-                else {M[SC.x][SC.y] = "@";}
-                
-            }
-            else
-            {
-                M[SC.x][SC.y] = ".";
-            }
-
-            for(int j=0; j<n; j++)
-            {
-                System.out.print("|");
-                for (int i = 0; i<n; i++)
-                {
-                    System.out.print(M[j][i]+"|");
-                }
-                System.out.println();
-            }
         }
     }
 
