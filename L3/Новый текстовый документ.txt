@@ -1,0 +1,49 @@
+4. The menu at a lunch counter includes a variety of sandwiches, salads, and drinks. The menu also allows a
+customer to create a "trio," which consists of three menu items: a sandwich, a salad, and a drink. The price
+of the trio is the sum of the two highest-priced menu items in the trio; one item with the lowest price is free.
+Each menu item has a name and a price. The four types of menu items are represented by the four classes
+Sandwich, Salad, Drink, and Trio. All four classes implement the following MenuItem interface.
+public interface MenuItem
+{
+}
+ /** @return the name of the menu item */
+ String getName();
+ /** @return the price of the menu item */
+ double getPrice();
+The following diagram shows the relationship between the MenuItem interface and the Sandwich,
+Salad, Drink, and Trio classes.
+For example, assume that the menu includes the following items. The objects listed under each heading are
+instances of the class indicated by the heading.
+Sandwich Salad Drink
+"Cheeseburger" "Spinach Salad" "Orange Soda"
+2.75 1.25 1.25
+"Club Sandwich" "Coleslaw" "Cappuccino"
+2.75 1.25 3.50
+Question 4 continues on page 13.
+2014 AP®
+ COMPUTER SCIENCE A FREE-RESPONSE QUESTIONS
+2014 AP®
+ COMPUTER SCIENCE A FREE-RESPONSE QUESTIONS
+© 2014 The College Board.
+Visit the College Board on the Web: www.collegeboard.org.
+GO ON TO THE NEXT PAGE.
+-13-
+The menu allows customers to create Trio menu items, each of which includes a sandwich, a salad, and a
+drink. The name of the Trio consists of the names of the sandwich, salad, and drink, in that order, each
+separated by "/" and followed by a space and then "Trio". The price of the Trio is the sum of the two
+highest-priced items in the Trio; one item with the lowest price is free.
+A trio consisting of a cheeseburger, spinach salad, and an orange soda would have the name
+"Cheeseburger/Spinach Salad/Orange Soda Trio" and a price of $4.00 (the two highest prices
+are $2.75 and $1.25). Similarly, a trio consisting of a club sandwich, coleslaw, and a cappuccino would have the
+name "Club Sandwich/Coleslaw/Cappuccino Trio" and a price of $6.25 (the two highest prices
+are $2.75 and $3.50).
+ Write the Trio class that implements the MenuItem interface. Your implementation must include a
+constructor that takes three parameters representing a sandwich, salad, and drink. The following code segment
+should have the indicated behavior.
+Sandwich sandwich;
+Salad salad;
+Drink drink;
+/* Code that initializes sandwich, salad, and drink */
+Trio trio = new Trio(sandwich, salad, drink); // Compiles without error
+Trio trio1 = new Trio(salad, sandwich, drink); // Compile-time error
+Trio trio2 = new Trio(sandwich, salad, salad); // Compile-time errors

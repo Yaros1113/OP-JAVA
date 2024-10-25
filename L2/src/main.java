@@ -63,34 +63,35 @@ public class main
         String[][] M = new String[n][n];
 
         System.out.print(" ");
-        for (int i = 0; i<n*2; i++) {System.out.print("_");}
+        for (int i = 0; i<n*2; i++) {System.out.print("___");}
         System.out.println();
 
         for (int i = 0; i<n; i++)
         {
             for (int j = 0; j<n; j++)
             {
-                M[i][j] = "_";
+                //M[i][j] = "   ";
+                M[i][j] = "___";
             }
         }
         for(int i = 0; i<k; i++)
         {
             if (Crts[i] != null)
             {
-                if (Crts[i].pwr <= 2) {M[Crts[i].x][Crts[i].y] = "*";}
-                else {M[Crts[i].x][Crts[i].y] = "o";}
+                if (Crts[i].pwr <= 2) {M[Crts[i].x][Crts[i].y] = "_*_";}
+                else {M[Crts[i].x][Crts[i].y] = "_o_";}
             }
 
         }
         if (SC.getEnergy() != 0)
         {
-            if (SC.pwr <= 2) {M[SC.x][SC.y] = "Ф";}
-            else {M[SC.x][SC.y] = "@";}
+            if (SC.pwr <= 2) {M[SC.x][SC.y] = " Ф ";}
+            else {M[SC.x][SC.y] = " @ ";}
             
         }
         else
         {
-            M[SC.x][SC.y] = ".";
+            M[SC.x][SC.y] = " . ";
         }
 
         for(int j=0; j<n; j++)
@@ -199,39 +200,39 @@ class StockpileCritter extends Critter
                     f = false;
                     break;
                 }
-                else if (((Crts[m].x>=x+2) && (Crts[m].x<=x+1)) && ((Crts[m].y>=y+2) && (Crts[m].y<=y+1)))
+                else if (((Crts[m].x>=x+4) && (Crts[m].x<=x+1)) && ((Crts[m].y>=y+4) && (Crts[m].y<=y+1)))
                 {
                     x = (x+1)%n;
                     y = (y+1)%n;
                     f = false;
                     break;
                 }
-                else if (((Crts[m].x>=x+2) && (Crts[m].x<=x+1)) && ((Crts[m].y>=y-2) && (Crts[m].y<=y-1)))
+                else if (((Crts[m].x>=x+4) && (Crts[m].x<=x+1)) && ((Crts[m].y>=y-4) && (Crts[m].y<=y-1)))
                 {
                     x = (x+1)%n;
                     y = (y-1); if (y<0){y = 0;}
                     f = false;
                     break;
                 }
-                else if (((Crts[m].x>=x+1)||(Crts[m].x<=x+2))&&(Crts[m].y==y))
+                else if (((Crts[m].x>=x+1)&&(Crts[m].x<=x+4))&&(Crts[m].y==y))
                 {
                     x = (x+1)%n;
                     f = false;
                     break;
                 }
-                else if (((Crts[m].x<=x-1)||(Crts[m].x>=x-2))&&(Crts[m].y==y))
+                else if (((Crts[m].x<=x-1)&&(Crts[m].x>=x-4))&&(Crts[m].y==y))
                 {
                     x = (x-1); if (x<0){x = 0;}
                     f = false;
                     break;
                 }
-                else if (((Crts[m].y>=y+1)||(Crts[m].y<=y+2))&&(Crts[m].x==x))
+                else if (((Crts[m].y>=y+1)&&(Crts[m].y<=y+4))&&(Crts[m].x==x))
                 {
                     y = (y+1)%n;
                     f = false;
                     break;
                 }
-                else if (((Crts[m].y<=y-1)||(Crts[m].y>=y-2))&&(Crts[m].x==x))
+                else if (((Crts[m].y<=y-1)&&(Crts[m].y>=y-4))&&(Crts[m].x==x))
                 {
                     y = (y-1); if (y<0){y = 0;}
                     f = false;
